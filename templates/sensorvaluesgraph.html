@@ -1,0 +1,87 @@
+<html>
+<head>
+    <title>{{ agent.jid }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css"
+          integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous"/>
+</head>
+<body>
+
+<div style="height: 98vh;">
+    Agent {{ agent.jid }}
+    <div class="chart-container" style="position: relative; width:45vw; float: left; margin: 100px 0px 0px 50px;">
+        <canvas id="voltageChart"></canvas>
+    </div>
+    <div class="chart-container" style="position: relative; width:45vw; float: right; margin: 100px 50px 0px 0px;">
+        <canvas id="currentChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+
+<script>
+    setTimeout(function () {
+        location.reload();
+    }, 5000);
+</script>
+<script>
+    let voltageRawData = {{ voltageGraphData | safe }};
+    let currentGraphData = {{ currentGraphData | safe }};
+
+    var voltageChart = new Chart(document.getElementById('voltageChart'), {
+        type: 'line',
+        data: {
+            datasets: voltageRawData
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Kretanje napona na pojedinom senzoru'
+            },
+            scales: {
+                xAxes: [
+                    {
+                        type: "linear"
+                    }
+                ],
+                yAxes: [
+                    {
+                        type: "linear",
+                        display: true,
+                        labelString: "Napon (V)"
+                    }
+                ]
+            }
+        }
+    });
+    var currentChart = new Chart(document.getElementById('currentChart'), {
+        type: 'line',
+        data: {
+            datasets: currentGraphData
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Kretanje struje na pojedinom senzoru'
+            },
+            scales: {
+                xAxes: [
+                    {
+                        type: "linear"
+                    }
+                ],
+                yAxes: [
+                    {
+                        type: "linear",
+                        display: true,
+                        labelString: "Struja (mA)"
+                    }
+                ]
+            }
+        }
+    });
+</script>
+</body>
+</html>
